@@ -6,10 +6,8 @@ from hupu_scrapy.items import BxjItem
 
 class BXJSpider(scrapy.Spider):
     name = "bxj"
-    allowed_domains = ["hupu.com"]
-    start_urls = [
-        "http://bbs.hupu.com/bxj-postdate-1",
-    ]
+    allowed_domains = ["bbs.hupu.com"]
+    start_urls = [ "http://bbs.hupu.com/bxj-postdate-"+str(idx) for idx in xrange(1, 10)]
 
     def parse(self, response):
 

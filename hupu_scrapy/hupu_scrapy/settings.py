@@ -27,5 +27,5 @@ ITEM_PIPELINES = {
     BOT_NAME+'.pipelines.BXJItemPipeline': 300,
     BOT_NAME+'.pipelines.BXJItemJsonWirterPipeline': 301,
     BOT_NAME+'.pipelines.BXJItemMongoPipeline': 302,
-    # BOT_NAME+'.pipelines.BXJItemDuplicatesPipeline': 303,
+    BOT_NAME+'.pipelines.BXJItemDuplicatesPipeline': 303,
 }

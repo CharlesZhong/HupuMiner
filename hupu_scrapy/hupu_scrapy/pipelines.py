@@ -36,7 +36,7 @@ class BXJItemPipeline(object):
 class BXJItemJsonWirterPipeline(object):
 
     def __init__(self):
-        self.file = open('BXJItem.jl', 'wb')
+        self.file = open('BXJItem.json', 'wb')
 
     def process_item(self, item, spider):
         line = json.dumps(dict(item)) + "\n"
@@ -70,14 +70,14 @@ class BXJItemMongoPipeline(object):
         return item
 
 
-# class BXJItemDuplicatesPipeline(object):
-#
-#     def __init__(self):
-#         self.ids_seen = set()
-#
-#     def process_item(self, item, spider):
-#         if item['title_page_url'] in self.ids_seen:
-#             raise DropItem("Duplicate item found: %s" % item)
-#         else:
-#             self.ids_seen.add(item['id'])
-#             return item
+class BXJItemDuplicatesPipeline(object):
+
+    def __init__(self):
+        self.ids_seen = set()
+
+    def process_item(self, item, spider):
+        if item['title_page_url'] in self.ids_seen:
+            raise DropItem("Duplicate item found: %s" % item)
+        else:
+            self.ids_seen.add(item['title_page_url'])
+            return item
