@@ -4,6 +4,7 @@ class PostSpider(scrapy.Spider):
 	name = "post"
 	allowed_domains = ["hupu.com"]
 	start_urls = [
-		"http://bbs.hupu.com/bxj",
+		"http://bbs.hupu.com/12663923.html",
 		]
+
 

@@ -12,6 +12,9 @@ class BXJSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
+
+        self.log("[BXJ Spider]", level=scrapy.log.INFO)
+
         table = response.xpath('//table[@id="pl"]')
         for tr in table.xpath('.//tr'):
             
@@ -50,10 +53,10 @@ class BXJSpider(scrapy.Spider):
 
                 
     def change_item(self, item):
-        
-        if item and isinstance(item, dict):
-            
 
-            
+        if item and isinstance(item, dict):
+
+
+
             return "\r\n".join([k+":"+reduce(lambda x,y: x + "|" + y ,map(lambda x: x.encode('utf8'), v)) if v else k+":None" for k, v in item.iteritems()])+"\r\n\r\n"
-        
+
