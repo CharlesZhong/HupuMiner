@@ -19,13 +19,13 @@ NEWSPIDER_MODULE = 'hupu_scrapy.spiders'
 
 MONGO_USER = os.environ.get('MONGO_USER')
 MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD')
-MONGO_URI= 'mongodb://{}:{}@127.0.0.1:27017/hupu'.format(MONGO_USER,MONGO_PASSWORD)
+MONGO_URI= 'mongodb://127.0.0.1:27017'
 MONGO_DATABASE = 'hupu'
 
 
 ITEM_PIPELINES = {
     BOT_NAME+'.pipelines.BXJItemPipeline': 300,
-    BOT_NAME+'.pipelines.BXJItemJsonWirterPipeline': 301,
-    BOT_NAME+'.pipelines.BXJItemMongoPipeline': 302,
-    BOT_NAME+'.pipelines.BXJItemDuplicatesPipeline': 303,
+    BOT_NAME+'.pipelines.BXJItemDuplicatesPipeline': 301,
+    BOT_NAME+'.pipelines.BXJItemJsonWirterPipeline': 302,
+    BOT_NAME+'.pipelines.BXJItemMongoPipeline': 303,
 }

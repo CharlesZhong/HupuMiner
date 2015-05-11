@@ -1,13 +1,13 @@
 # -*- coding: UTF-8 -*-
 import scrapy
 
-from hupu_scrapy.items import BxjItem
+from hupu_scrapy.items import BXJItem
 
 
 class BXJSpider(scrapy.Spider):
     name = "bxj"
     allowed_domains = ["bbs.hupu.com"]
-    start_urls = [ "http://bbs.hupu.com/bxj-postdate-"+str(idx) for idx in xrange(1, 10)]
+    start_urls = [ "http://bbs.hupu.com/bxj-postdate-"+str(idx) for idx in xrange(1, 100)]
 
     def parse(self, response):
 
@@ -18,7 +18,7 @@ class BXJSpider(scrapy.Spider):
             
             node_title = tr.xpath('./td[@class="p_title"]')
             if node_title:
-                item = BxjItem()
+                item = BXJItem()
                 item['title'] = node_title.xpath('./a[@id]/text()').extract()
                 
                 item['zone'] = node_title.xpath('./a[not(@id)]/text()').extract()

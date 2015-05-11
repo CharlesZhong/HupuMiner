@@ -8,7 +8,7 @@
 import scrapy
 
 
-class BxjItem(scrapy.Item):
+class BXJItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
 	title_page_url = scrapy.Field()

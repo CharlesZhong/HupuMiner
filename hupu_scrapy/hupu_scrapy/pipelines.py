@@ -32,6 +32,18 @@ class BXJItemPipeline(object):
 
     def close_spider(self, spider):
         log.msg("Hello!\r\n")
+class BXJItemDuplicatesPipeline(object):
+
+    def __init__(self):
+        self.ids_seen = set()
+
+    def process_item(self, item, spider):
+        if item['title_page_url'][0] in self.ids_seen:
+            raise DropItem("Duplicate item found: %s" % item)
+        else:
+            self.ids_seen.add(item['title_page_url'][0])
+            return item
+
 
 class BXJItemJsonWirterPipeline(object):
 
@@ -57,6 +69,8 @@ class BXJItemMongoPipeline(object):
         )
 
     def open_spider(self, spider):
+
+
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
 
@@ -70,14 +84,3 @@ class BXJItemMongoPipeline(object):
         return item
 
 
-class BXJItemDuplicatesPipeline(object):
-
-    def __init__(self):
-        self.ids_seen = set()
-
-    def process_item(self, item, spider):
-        if item['title_page_url'] in self.ids_seen:
-            raise DropItem("Duplicate item found: %s" % item)
-        else:
-            self.ids_seen.add(item['title_page_url'])
-            return item
