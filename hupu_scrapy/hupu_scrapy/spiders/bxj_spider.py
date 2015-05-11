@@ -2,16 +2,20 @@
 import scrapy
 
 from hupu_scrapy.items import BXJItem
-
+from  scrapy.http import Request
 
 class BXJSpider(scrapy.Spider):
     name = "bxj"
     allowed_domains = ["bbs.hupu.com"]
     start_urls = [ "http://bbs.hupu.com/bxj-postdate-"+str(idx) for idx in xrange(1, 100)]
 
-    def parse(self, response):
+    def make_requests_from_url(self, url):
+        return Request(url, dont_filter=True, meta = {
+                  'dont_redirect': True,
+                  'handle_httpstatus_list': [301,302]
+            })
 
-        self.log("[BXJ Spider]", level=scrapy.log.INFO)
+    def parse(self, response):
 
         table = response.xpath('//table[@id="pl"]')
         for tr in table.xpath('.//tr'):
