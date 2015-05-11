@@ -7,13 +7,14 @@ from  scrapy.http import Request
 class BXJSpider(scrapy.Spider):
     name = "bxj"
     allowed_domains = ["bbs.hupu.com"]
-    start_urls = [ "http://bbs.hupu.com/bxj-postdate-"+str(idx) for idx in xrange(1, 100)]
 
-    def make_requests_from_url(self, url):
-        return Request(url, dont_filter=True, meta = {
-                  'dont_redirect': True,
-                  'handle_httpstatus_list': [301,302]
-            })
+    start_urls = ["http://bbs.hupu.com/bxj-postdate-"+str(idx) for idx in xrange(1, 10)]
+
+    # def make_requests_from_url(self, url):
+    #     return Request(url, dont_filter=True, meta = {
+    #               'dont_redirect': True,
+    #               'handle_httpstatus_list': [301,302]
+    #         })
 
     def parse(self, response):
 
@@ -23,8 +24,22 @@ class BXJSpider(scrapy.Spider):
             node_title = tr.xpath('./td[@class="p_title"]')
             if node_title:
                 item = BXJItem()
-                item['title'] = node_title.xpath('./a[@id]/text()').extract()
-                
+                common = node_title.xpath('./a[@id]/text()').extract()
+                font = node_title.xpath('./a[@id]/font/text()').extract()
+                b_font =  node_title.xpath('./a[@id]/b/font/text()').extract()
+                b =  node_title.xpath('./a[@id]/b/text()').extract()
+
+                if common:
+                    item['title'] = common
+                elif font:
+                    item['title'] = font
+                elif b:
+                    item['title'] = b
+                elif b_font:
+                    item['title'] = b_font
+                else:
+                    item['title'] = ""
+
                 item['zone'] = node_title.xpath('./a[not(@id)]/text()').extract()
                 item['zone_prefix'] = node_title.xpath('./a[not(@id)]/@href').extract()
                 item['title_page_url'] = node_title.xpath('./a[@id]/@href').extract()
@@ -41,9 +56,8 @@ class BXJSpider(scrapy.Spider):
 
                 node_re = tr.xpath('./td[@class="p_re"]')
                 if node_re:
-                    reply_browse = node_re.xpath('./text()').extract()
+                    item['reply_browse'] = node_re.xpath('./text()').extract()
 
-                    item['reply_count'],item['browse_count'] = map(lambda x: x.strip(),reply_browse[0].split("/")) if reply_browse else (None,None)
                 node_retime = tr.xpath('./td[@class="p_retime"]')
                 if node_retime:
                     item['last_reply_time']= node_retime.xpath('./a/text()').extract()
